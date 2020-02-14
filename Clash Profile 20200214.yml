@@ -1,0 +1,70 @@
+port: 7890
+socks-port: 7891
+redir-port: 7892
+allow-lan: false
+mode: Rule
+log-level: info
+external-controller: 127.0.0.1:9090
+secret: ""
+cfw-bypass:
+  - localhost
+  - 127.*
+  - 10.*
+  - 172.16.*
+  - 172.17.*
+  - 172.18.*
+  - 172.19.*
+  - 172.20.*
+  - 172.21.*
+  - 172.22.*
+  - 172.23.*
+  - 172.24.*
+  - 172.25.*
+  - 172.26.*
+  - 172.27.*
+  - 172.28.*
+  - 172.29.*
+  - 172.30.*
+  - 172.31.*
+  - 192.168.*
+  - <local>
+cfw-latency-timeout: 3000
+cfw-latency-url: http://www.gstatic.com/generate_204
+cfw-conn-break-strategy:
+  proxy: none
+  profile: true
+  mode: false
+cfw-child-process: []
+Proxy:
+  - name: HostDare GigCn2 LA
+    type: vmess
+    server: design.sleaf37.com
+    port: "443"
+    uuid: b86d6020-d3f9-49f9-b968-5d67f3471864
+    alterId: "0"
+    cipher: none
+    tls: true
+    network: ws
+    ws-path: /design/file/
+    _index: 0
+  - name: Bandwagon Cn2 LA
+    type: vmess
+    server: blog.sleaf37.com
+    port: "80"
+    uuid: aaac4a64-2c1b-3c21-6687-31e032fce55a
+    alterId: "64"
+    cipher: aes-128-gcm
+    network: ws
+    ws-path: /sync/backup/
+Proxy Group:
+  - name: Proxy
+    proxies:
+      - HostDare GigCn2 LA
+      - Bandwagon Cn2 LA
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: "1000"
+Rule:
+  - DOMAIN-SUFFIX,*apple.com/cn,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,Proxy
